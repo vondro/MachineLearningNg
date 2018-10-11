@@ -28,12 +28,11 @@ sigma = zeros(1, size(X, 2));
 
 
 
+    % compute mean and std for each column (feature)
+    % modify the column of X_norm
+mu = mean(X);
+sigma = std(X);
+X_norm = (X .- mu) ./ sigma;
 
-
-
-
-
-
-% ============================================================
 
 end
