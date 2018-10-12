@@ -34,10 +34,5 @@ mu = mean(X);
 sigma = std(X);
 X_norm = (X .- mu) ./ sigma;
 
-disp "X: ", disp (X);
-disp "Mean: ", disp(mu);
-disp "Sigma: ", disp(sigma);
-disp "X_norm: ", disp (X_norm);
-
 
 end
