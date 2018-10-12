@@ -8,7 +8,7 @@
 %  linear regression exercise. 
 %
 %  You will need to complete the following functions in this 
-%  exericse:
+%  exercise:
 %
 %     warmUpExercise.m
 %     plotData.m
@@ -104,8 +104,7 @@ fprintf('\n');
 % ====================== YOUR CODE HERE ======================
 % Recall that the first column of X is all-ones. Thus, it does
 % not need to be normalized.
-price = [1 featureNormalize([1650 3])] * theta; % You should change this
-disp ([1 featureNormalize([1650 3])]);
+price = [1 ((1650-mu(1))/sigma(1)) ((3-mu(2))/sigma(2))] * theta; % You should change this
 
 % ============================================================
 

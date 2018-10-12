@@ -23,9 +23,6 @@ for iter = 1:num_iters
     for i = 1:size(theta,1)
         
         new_theta(i) = theta(i) - alpha * (X*theta-y)'*X(:, i) / m;
-        if i == 2
-        %disp "theta1: ", disp ((X*theta-y)'*X(:, i) / m);
-        end
 
     end
     
