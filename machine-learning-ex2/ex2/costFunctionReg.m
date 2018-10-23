@@ -20,11 +20,18 @@ grad = zeros(size(theta));
 % non-regularized cost function
 nonReg = (1/m)*sum(-y.*log(sigmoid(X*theta)) - (1-y).*log(1 - sigmoid(X*theta)));
 
-% add regularization term
+% compute regularization term (the same value for every theta except theta0)
+regTerm = (lambda/(2*m)) * sum(theta([2:end]).^2);
 
+% add the regularization term
+J = nonReg + regTerm;
 
+% compute reg term for gradient
+gradRegTerm = zeros(size(grad));
+gradRegTerm([2:end]) = (lambda/m) * theta([2:end]);
 
-
+% add grad reg term
+grad = ((1/m)*((sigmoid(X*theta)-y)'*X))' + gradRegTerm;
 
 
 % =============================================================
