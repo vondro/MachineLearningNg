@@ -28,8 +28,14 @@ X = [ones(m, 1) X];
 %       max element, for more information see 'help max'. If your examples 
 %       are in rows, then, you can use max(A, [], 2) to obtain the max 
 %       for each row.
-%       
+% 
 
+% compute hypotheses K times for each example -> result for one example will be
+% in one row
+out = sigmoid(X*all_theta');
+
+% second output argument is index of the maximal value in the row of the matrix
+[x, p] = max(out, [], 2);
 
 
 

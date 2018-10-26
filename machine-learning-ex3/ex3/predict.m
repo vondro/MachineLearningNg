@@ -21,12 +21,19 @@ p = zeros(size(X, 1), 1);
 %       can use max(A, [], 2) to obtain the max for each row.
 %
 
+% Add ones to the X data matrix
+X = [ones(m, 1) X];
 
+% activation of the second layer
+A2 = sigmoid(X*Theta1');
 
+% adding bias to the second layer activation vector
+A2 = [ones(size(A2, 1), 1) A2];
 
+% activation of the output layer -> hypothesis result
+A3 = sigmoid(A2*Theta2');
 
-
-
+[x, p] = max(A3, [], 2);
 
 
 % =========================================================================
