@@ -63,7 +63,29 @@ Theta2_grad = zeros(size(Theta2));
 %
 
 
+% Part 1 - feedforward the neural network
+% convert y vector to 5000x10 matrix
+yMat = zeros(size(y, 1), num_labels);
+for i=1:size(yMat, 1)
+  yMat(i, y(i)) = 1;
+endfor
 
+% disp (yMat(1:1000, :));
+
+% Add ones to the X data matrix
+X = [ones(m, 1) X];
+
+% activation of the second layer
+A2 = sigmoid(X*Theta1');
+
+% adding bias to the second layer activation vector
+A2 = [ones(size(A2, 1), 1) A2];
+
+% activation of the output layer -> hypothesis result
+A3 = sigmoid(A2*Theta2');
+
+% put the pieces together -> compute the cost
+J = sum(sum((1/m) * ((-yMat.*log(A3)) - ((1-yMat).*log(1-A3)))), 2);
 
 
 
