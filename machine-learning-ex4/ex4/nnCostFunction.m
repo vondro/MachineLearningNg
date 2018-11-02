@@ -112,6 +112,13 @@ delta2 = (delta3*Theta2)(:, [2:end]) .* sigmoidGradient(Z2);
 Theta1_grad = (1/m) * (delta2'*X_bias);
 Theta2_grad = (1/m) * (delta3'*A2_bias);
 
+% regularization term
+regTerm1BP = (lambda/m) * Theta1(:, [2:end]);
+regTerm2BP = (lambda/m) * Theta2(:, [2:end]);
+
+%regularization
+Theta1_grad(:, [2:end]) += regTerm1BP;
+Theta2_grad(:, [2:end]) += regTerm2BP;
 
 % -------------------------------------------------------------
 
