@@ -74,16 +74,18 @@ endfor
 % disp (yMat(1:1000, :));
 
 % Add ones to the X data matrix
-X = [ones(m, 1) X];
+X_bias = [ones(m, 1) X];
 
 % activation of the second layer
-A2 = sigmoid(X*Theta1');
+Z2 = X_bias*Theta1';
+A2 = sigmoid(Z2);
 
 % adding bias to the second layer activation vector
-A2 = [ones(size(A2, 1), 1) A2];
+A2_bias = [ones(size(A2, 1), 1) A2];
 
 % activation of the output layer -> hypothesis result
-A3 = sigmoid(A2*Theta2');
+Z3 = A2_bias*Theta2';
+A3 = sigmoid(Z3);
 
 % put the pieces together -> compute the cost
 J = sum(sum((1/m) * ((-yMat.*log(A3)) - ((1-yMat).*log(1-A3)))), 2);
@@ -100,19 +102,15 @@ J = J + regTerm;
 
 % Part 3 - backpropagation
 
+% compute delta3 - deltas for each training example are in rows
+delta3 = A3 - yMat;
 
+% compute delta2 - deltas for each training example are in rows
+delta2 = (delta3*Theta2)(:, [2:end]) .* sigmoidGradient(Z2);
 
-
-
-
-
-
-
-
-
-
-
-
+% compute the gradient
+Theta1_grad = (1/m) * (delta2'*X_bias);
+Theta2_grad = (1/m) * (delta3'*A2_bias);
 
 
 % -------------------------------------------------------------
