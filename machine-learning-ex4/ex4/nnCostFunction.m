@@ -98,6 +98,9 @@ regTerm = (lambda/(2*m)) * (sum(sum(Theta1(:, [2:end]).^2)) + sum(sum(Theta2(:, 
 % add the regularization term to the cost
 J = J + regTerm;
 
+% Part 3 - backpropagation
+
+
 
 
 
