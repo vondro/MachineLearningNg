@@ -64,6 +64,7 @@ Theta2_grad = zeros(size(Theta2));
 
 
 % Part 1 - feedforward the neural network
+
 % convert y vector to 5000x10 matrix
 yMat = zeros(size(y, 1), num_labels);
 for i=1:size(yMat, 1)
@@ -87,6 +88,15 @@ A3 = sigmoid(A2*Theta2');
 % put the pieces together -> compute the cost
 J = sum(sum((1/m) * ((-yMat.*log(A3)) - ((1-yMat).*log(1-A3)))), 2);
 
+
+% Part 2 - regularization
+% computing the regularization term and adding it to already computed J
+
+% compute the regularization term (skip the first column - corresponding to the bias units)
+regTerm = (lambda/(2*m)) * (sum(sum(Theta1(:, [2:end]).^2)) + sum(sum(Theta2(:, [2:end]).^2)));
+
+% add the regularization term to the cost
+J = J + regTerm;
 
 
 
