@@ -35,9 +35,9 @@ load ('ex5data1.mat');
 m = size(X, 1);
 
 % Plot training data
-%plot(X, y, 'rx', 'MarkerSize', 10, 'LineWidth', 1.5);
-%xlabel('Change in water level (x)');
-%ylabel('Water flowing out of the dam (y)');
+plot(X, y, 'rx', 'MarkerSize', 10, 'LineWidth', 1.5);
+xlabel('Change in water level (x)');
+ylabel('Water flowing out of the dam (y)');
 
 fprintf('Program paused. Press enter to continue.\n');
 pause;
@@ -164,7 +164,7 @@ pause;
 %  lambda to see how the fit and learning curve change.
 %
 
-lambda = 0;
+lambda = 0.01;
 [theta] = trainLinearReg(X_poly, y, lambda);
 
 % Plot training data and fit
@@ -215,6 +215,12 @@ for i = 1:length(lambda_vec)
 	fprintf(' %f\t%f\t%f\n', ...
             lambda_vec(i), error_train(i), error_val(i));
 end
+
+% optional exercise 3.4
+[minError, i] = min(error_val);
+theta = trainLinearReg(X_poly, y, lambda_vec(i));
+testError = linearRegCostFunction(X_poly_test, ytest, theta, 0);
+fprintf('Test error for the best lambda: %f\n\n', testError);
 
 fprintf('Program paused. Press enter to continue.\n');
 pause;

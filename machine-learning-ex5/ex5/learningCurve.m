@@ -53,9 +53,34 @@ error_val   = zeros(m, 1);
 
 % ---------------------- Sample Solution ----------------------
 
+% old code without random sample selection
+for i=1:m
+  theta = trainLinearReg(X(1:i, :), y(1:i), lambda);
+  error_train(i) = linearRegCostFunction(X(1:i, :), y(1:i), theta, 0);
+  error_val(i) = linearRegCostFunction(Xval, yval, theta, 0);
+end
 
+% random sample selection - ungraded exercise 3.5
+nIter = 5;
+res = zeros(nIter, 1);
+resVal = zeros(nIter, 1);
 
-
+%for i = 1:m
+%  for j=1:nIter
+%    randomIdx = randperm(m);
+%    randomIdval = randperm(m);
+%    sampleX = X(randomIdx(1:i), :);
+%    sampley = y(randomIdx(1:i), :);
+%    sampleXval = Xval(randomIdval(1:i), :);
+%    sampleyval = yval(randomIdval(1:i), :);
+%    theta = trainLinearReg(sampleX, sampley, lambda);
+    
+%    res(j) = linearRegCostFunction(sampleX, sampley, theta, 0);
+%    resVal(j) = linearRegCostFunction(sampleXval, sampleyval, theta, 0);
+%  end
+%  error_train(i) = mean(res);
+%  error_val(i) = mean(resVal);
+%end
 
 
 
