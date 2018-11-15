@@ -94,6 +94,7 @@ C = 0.01;
 sigma =  2.43;
 
 % train the model
+% we don't use sigma since we use linear kernel
 model = svmTrain(X, y, C, @linearKernel);
 
 % make prediction 
@@ -110,4 +111,5 @@ fprintf('Test Accuracy: %f\n', mean(double(p == ytest)) * 100);
 % processing the full dataset
 % making my own vocabulary
 % trying to use highly optimized SVM toolboxes such as LIBSVM
+% with full dataset - use the gaussian kernel and compare results to linear
 
