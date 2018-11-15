@@ -4,11 +4,12 @@
 %% Initialization
 clear ; close all; clc
 
-  % one row per e-mail example
-  regularIndices = {};
-  spamIndices = {};
-  regularFeatures = [];
-  spamFeatures = [];
+regularIndices = {};
+spamIndices = {};
+regularFeatures = [];
+spamFeatures = [];
+
+vocabList = getVocabList();
 
 % check for indices in files
 if (!exist("spamIndices.mat", "file") || !exist("regularIndices.mat", "file"))
@@ -22,16 +23,14 @@ if (!exist("spamIndices.mat", "file") || !exist("regularIndices.mat", "file"))
 
   % process regular mails (using vocabulary from the course
   for i=1:length(regularMails)
-  % for i=1:2
-    processed = processEmail(regularMails{i});
+    processed = processEmail(regularMails{i}, vocabList);
     % one mail per row
     regularIndices  = [regularIndices; processed'];
   endfor
 
   % process spam mails
   for i=1:length(spamMails)
-  % for i=1:2
-    processed = processEmail(spamMails{i});
+    processed = processEmail(spamMails{i}, vocabList);
     spamIndices  = [spamIndices; processed'];
   endfor
 
@@ -46,13 +45,11 @@ endif
 
 % extract features from regular mails
 for i=1:length(regularIndices)
-% for i=1:2
   regularFeatures = [regularFeatures; emailFeatures(regularIndices{i})'];
 endfor
 
 % extract features from spam mails
 for i=1:length(spamIndices)
-% for i=1:2
   spamFeatures = [spamFeatures; emailFeatures(spamIndices{i})'];
 endfor
 
@@ -69,4 +66,7 @@ y = [zeros(size(regularFeatures)(1), 1); ones(size(spamFeatures)(1), 1)];
 % safe features to files
 save assasinX.mat X;
 save assasiny.mat y;
+
+
+
 

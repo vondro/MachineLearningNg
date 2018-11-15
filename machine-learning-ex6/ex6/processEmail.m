@@ -1,4 +1,4 @@
-function word_indices = processEmail(email_contents)
+function word_indices = processEmail(email_contents, vocabList = 0)
 %PROCESSEMAIL preprocesses a the body of an email and
 %returns a list of word_indices 
 %   word_indices = PROCESSEMAIL(email_contents) preprocesses 
@@ -7,7 +7,9 @@ function word_indices = processEmail(email_contents)
 %
 
 % Load Vocabulary
-vocabList = getVocabList();
+if (!iscell(vocabList))
+  vocabList = getVocabList();
+endif
 
 % Init return value
 word_indices = [];
@@ -97,13 +99,22 @@ while ~isempty(email_contents)
     %       str2). It will return 1 only if the two strings are equivalent.
     %
 
-listLen = length(vocabList);
-for i=1:listLen
-  if (strcmp(str, vocabList{i}))
-    word_indices = [word_indices ; i];
-    break;
-  endif
-end
+    
+% here lies the biggest performance issue
+%listLen = length(vocabList);
+%for i=1:listLen
+%  if (strcmp(str, vocabList{i}))
+%    word_indices = [word_indices ; i];
+%    break;
+%  endif
+%end
+
+try
+  word_indices = [word_indices; vocabList.(str)];
+catch
+  % word missing
+  % printf("word missing: %s\n", str);
+end_try_catch
 
 
 

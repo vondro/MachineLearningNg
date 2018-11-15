@@ -104,7 +104,7 @@ pause;
 
 % Sort the weights and obtin the vocabulary list
 [weight, idx] = sort(model.w, 'descend');
-vocabList = getVocabList();
+vocabList = getVocabListOld();
 
 fprintf('\nTop predictors of spam: \n');
 for i = 1:15
