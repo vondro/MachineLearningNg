@@ -106,3 +106,8 @@ p = svmPredict(model, Xtest);
 
 fprintf('Test Accuracy: %f\n', mean(double(p == ytest)) * 100);
 
+% TODO
+% processing the full dataset
+% making my own vocabulary
+% trying to use highly optimized SVM toolboxes such as LIBSVM
+
