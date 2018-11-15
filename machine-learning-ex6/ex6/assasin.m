@@ -35,8 +35,8 @@ if (!exist("spamIndices.mat", "file") || !exist("regularIndices.mat", "file"))
   endfor
 
   % save indices to file
-  save spamIndices.mat spamIndices;
   save regularIndices.mat regularIndices;
+  save spamIndices.mat spamIndices;
 else
   load("spamIndices.mat");
   load("regularIndices.mat");
@@ -67,6 +67,42 @@ y = [zeros(size(regularFeatures)(1), 1); ones(size(spamFeatures)(1), 1)];
 save assasinX.mat X;
 save assasiny.mat y;
 
+% split the dataset into training set, CV set, test set
+% 60% training, 20% CV, 20% test
 
+nRows = size(X)(1);
+trainSample = floor(nRows *0.6);
+testSample = floor(nRows *0.2);
 
+rndIDX = randperm(nRows);
+
+% test set
+Xtest = X(rndIDX(1:testSample), :);
+ytest = y(rndIDX(1:testSample), :);
+
+% cross-validation set
+Xcv = X(rndIDX((testSample+1):(2*testSample)), :);
+ycv = y(rndIDX((testSample+1):(2*testSample)), :);
+
+% training set
+X = X(rndIDX([(2*testSample+1):end]), :);
+y = y(rndIDX([(2*testSample+1):end]), :);
+
+% compute training parameters (just once, for performance reasons)
+%[C, sigma] = dataset3Params(X, y, Xcv, ycv);
+C = 0.01;
+sigma =  2.43;
+
+% train the model
+model = svmTrain(X, y, C, @linearKernel);
+
+% make prediction 
+p = svmPredict(model, X);
+
+fprintf('Training Accuracy: %f\n', mean(double(p == y)) * 100);
+
+% check the test set prediction
+p = svmPredict(model, Xtest);
+
+fprintf('Test Accuracy: %f\n', mean(double(p == ytest)) * 100);
 
