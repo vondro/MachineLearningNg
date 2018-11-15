@@ -71,6 +71,7 @@ fprintf('\nTraining Linear SVM (Spam Classification)\n')
 fprintf('(this may take 1 to 2 minutes) ...\n')
 
 C = 0.1;
+disp (X);
 model = svmTrain(X, y, C, @linearKernel);
 
 p = svmPredict(model, X);
