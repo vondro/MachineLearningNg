@@ -4,6 +4,12 @@
 %% Initialization
 clear ; close all; clc
 
+  % one row per e-mail example
+  regularIndices = {};
+  spamIndices = {};
+  regularFeatures = [];
+  spamFeatures = [];
+
 % check for indices in files
 if (!exist("spamIndices.mat", "file") || !exist("regularIndices.mat", "file"))
   % load content of regular mails
@@ -13,12 +19,6 @@ if (!exist("spamIndices.mat", "file") || !exist("regularIndices.mat", "file"))
   % load content of spam mails
   printf("Loading content of spam mails ....\n");
   spamMails = loadDir("spam");
-
-  % one row per e-mail example
-  regularIndices = {};
-  spamIndices = {};
-  regularFeatures = [];
-  spamFeatures = [];
 
   % process regular mails (using vocabulary from the course
   for i=1:length(regularMails)
