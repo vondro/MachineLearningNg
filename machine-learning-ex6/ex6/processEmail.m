@@ -1,4 +1,4 @@
-function word_indices = processEmail(email_contents, vocabList = 0)
+function word_indices = processEmail(email_contents, vocabList = 0, header = 0)
 %PROCESSEMAIL preprocesses a the body of an email and
 %returns a list of word_indices 
 %   word_indices = PROCESSEMAIL(email_contents) preprocesses 
@@ -19,38 +19,15 @@ word_indices = [];
 % Find the Headers ( \n\n and remove )
 % Uncomment the following lines if you are working with raw emails with the
 % full headers
+if (header)
+  hdrstart = strfind(email_contents, ([char(10) char(10)]));
+  email_contents = email_contents(hdrstart(1):end);
+endif
 
-% hdrstart = strfind(email_contents, ([char(10) char(10)]));
-% email_contents = email_contents(hdrstart(1):end);
-
-% Lower case
-email_contents = lower(email_contents);
-
-% Strip all HTML
-% Looks for any expression that starts with < and ends with > and replace
-% and does not have any < or > in the tag it with a space
-email_contents = regexprep(email_contents, '<[^<>]+>', ' ');
-
-% Handle Numbers
-% Look for one or more characters between 0-9
-email_contents = regexprep(email_contents, '[0-9]+', 'number');
-
-% Handle URLS
-% Look for strings starting with http:// or https://
-email_contents = regexprep(email_contents, ...
-                           '(http|https)://[^\s]*', 'httpaddr');
-
-% Handle Email Addresses
-% Look for strings with @ in the middle
-email_contents = regexprep(email_contents, '[^\s]+@[^\s]+', 'emailaddr');
-
-% Handle $ sign
-email_contents = regexprep(email_contents, '[$]+', 'dollar');
-
+email_contents = substituteWords(email_contents);
 
 % ========================== Tokenize Email ===========================
 
-% Output the email to screen as well
 fprintf('Processing email ....\n');
 
 % Process file
@@ -100,24 +77,23 @@ while ~isempty(email_contents)
     %
 
     
-% here lies the biggest performance issue
-%listLen = length(vocabList);
-%for i=1:listLen
-%  if (strcmp(str, vocabList{i}))
-%    word_indices = [word_indices ; i];
-%    break;
-%  endif
-%end
+    % here lies the biggest performance issue
+    %listLen = length(vocabList);
+    %for i=1:listLen
+    %  if (strcmp(str, vocabList{i}))
+    %    word_indices = [word_indices ; i];
+    %    break;
+    %  endif
+    %end
 
-try
-  word_indices = [word_indices; vocabList.(str)];
-catch
-  % word missing
-  % printf("word missing: %s\n", str);
-end_try_catch
-
-
-
+    % generate indices from processed words in mails, using vocabList
+    
+    try
+      word_indices = [word_indices; vocabList.(str)];
+    catch
+      % word missing
+      % printf("word missing: %s\n", str);
+    end_try_catch
 
     % =============================================================
 

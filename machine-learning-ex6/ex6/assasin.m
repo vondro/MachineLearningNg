@@ -42,7 +42,13 @@ else
   load("regularIndices.mat");
 endif
 
+% generating custom vocabulary from processed mails
+% using struct to count occurences of words (word = field in struct, count = field value)
 
+
+
+
+printf("Extracting features from processed mails ....\n");
 % extract features from regular mails
 for i=1:length(regularIndices)
   regularFeatures = [regularFeatures; emailFeatures(regularIndices{i})'];
@@ -69,6 +75,8 @@ save assasiny.mat y;
 
 % split the dataset into training set, CV set, test set
 % 60% training, 20% CV, 20% test
+
+printf("Generating training set (60%), cv set (20%) and test set (20%)\n");
 
 nRows = size(X)(1);
 trainSample = floor(nRows *0.6);
@@ -108,7 +116,6 @@ p = svmPredict(model, Xtest);
 fprintf('Test Accuracy: %f\n', mean(double(p == ytest)) * 100);
 
 % TODO
-% processing the full dataset
 % making my own vocabulary
 % trying to use highly optimized SVM toolboxes such as LIBSVM
 % with full dataset - use the gaussian kernel and compare results to linear
