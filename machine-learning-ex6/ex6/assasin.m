@@ -9,7 +9,11 @@ spamIndices = {};
 regularFeatures = [];
 spamFeatures = [];
 
-vocabList = getVocabList();
+if (!exist("vocabList.mat", "file"))
+  vocabList = getVocabList();
+else
+  load("vocabList.mat");
+endif
 
 % check for indices in files
 if (!exist("spamIndices.mat", "file") || !exist("regularIndices.mat", "file"))
@@ -22,6 +26,7 @@ if (!exist("spamIndices.mat", "file") || !exist("regularIndices.mat", "file"))
   spamMails = loadDir("spam");
 
   % process regular mails (using vocabulary from the course
+  printf("Generating regular mail indices ....\n");
   for i=1:length(regularMails)
     processed = processEmail(regularMails{i}, vocabList);
     % one mail per row
@@ -29,6 +34,7 @@ if (!exist("spamIndices.mat", "file") || !exist("regularIndices.mat", "file"))
   endfor
 
   % process spam mails
+  printf("Generating spam mail indices ....\n");
   for i=1:length(spamMails)
     processed = processEmail(spamMails{i}, vocabList);
     spamIndices  = [spamIndices; processed'];
@@ -38,6 +44,7 @@ if (!exist("spamIndices.mat", "file") || !exist("regularIndices.mat", "file"))
   save regularIndices.mat regularIndices;
   save spamIndices.mat spamIndices;
 else
+  printf("Loading processed mails with indices ....\n");
   load("spamIndices.mat");
   load("regularIndices.mat");
 endif
@@ -46,37 +53,42 @@ endif
 % using struct to count occurences of words (word = field in struct, count = field value)
 
 
+if (!exist("assasinX.mat", "file") || !exist("assasiny.mat", "file"))
 
+  printf("Extracting features from processed mails ....\n");
+  % extract features from regular mails
+  for i=1:length(regularIndices)
+    regularFeatures = [regularFeatures; emailFeatures(regularIndices{i})'];
+  endfor
 
-printf("Extracting features from processed mails ....\n");
-% extract features from regular mails
-for i=1:length(regularIndices)
-  regularFeatures = [regularFeatures; emailFeatures(regularIndices{i})'];
-endfor
+  % extract features from spam mails
+  for i=1:length(spamIndices)
+    spamFeatures = [spamFeatures; emailFeatures(spamIndices{i})'];
+  endfor
 
-% extract features from spam mails
-for i=1:length(spamIndices)
-  spamFeatures = [spamFeatures; emailFeatures(spamIndices{i})'];
-endfor
+  % concatenate feature to one feature matrix_type
+  % m x 1899 one mail per row
+  X = [regularFeatures; spamFeatures];
 
-% concatenate feature to one feature matrix_type
-% m x 1899 one mail per row
-X = [regularFeatures; spamFeatures];
+  % add one column of ones to X
+  X = [ones(size(X)(1), 1) X];
 
-% add one column of ones to X
-X = [ones(size(X)(1), 1) X];
+  % create result vector
+  y = [zeros(size(regularFeatures)(1), 1); ones(size(spamFeatures)(1), 1)];
 
-% create result vector
-y = [zeros(size(regularFeatures)(1), 1); ones(size(spamFeatures)(1), 1)];
-
-% safe features to files
-save assasinX.mat X;
-save assasiny.mat y;
+  % safe features to files
+  save assasinX.mat X;
+  save assasiny.mat y;
+else
+  printf("Loading saved features ....\n");
+  load("assasinX.mat");
+  load("assasiny.mat");
+endif
 
 % split the dataset into training set, CV set, test set
 % 60% training, 20% CV, 20% test
 
-printf("Generating training set (60%), cv set (20%) and test set (20%)\n");
+printf("Generating training set (60%%), cv set (20%%) and test set (20%%)\n");
 
 nRows = size(X)(1);
 trainSample = floor(nRows *0.6);
@@ -117,6 +129,11 @@ fprintf('Test Accuracy: %f\n', mean(double(p == ytest)) * 100);
 
 % TODO
 % making my own vocabulary
+% VOCABULARY ISSUES:
+% - too few features (~ 900 in processed examples from spamassasin
+% - vocabulary is not generated on trainings set, but the whole dataset (dependency)
+%  ... but the accuracy is higher with custom vocabulary
+% -> what fetures to add?
 % trying to use highly optimized SVM toolboxes such as LIBSVM
 % with full dataset - use the gaussian kernel and compare results to linear
 
