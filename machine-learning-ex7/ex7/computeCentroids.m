@@ -26,7 +26,18 @@ centroids = zeros(K, n);
 % Note: You can use a for-loop over the centroids to compute this.
 %
 
-
+for i=1:K
+  % filter for examples that were assigned to the centroid #i
+  filt = (idx == i);
+  belong = X.*filt;
+  
+  % number of examples assigned to centroid #i
+  Ck = sum(filt);
+  
+  % compute the new centroid position
+  centroids(i, :) = (1/Ck) * sum(belong);
+  
+endfor
 
 
 

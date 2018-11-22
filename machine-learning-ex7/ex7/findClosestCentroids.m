@@ -11,6 +11,9 @@ K = size(centroids, 1);
 % You need to return the following variables correctly.
 idx = zeros(size(X,1), 1);
 
+% initialize m (= number of examples)
+m = size(X, 1);
+
 % ====================== YOUR CODE HERE ======================
 % Instructions: Go over every example, find its closest centroid, and store
 %               the index inside idx at the appropriate location.
@@ -21,7 +24,17 @@ idx = zeros(size(X,1), 1);
 % Note: You can use a for-loop over the examples to compute this.
 %
 
+dist = zeros(K, 1);
 
+for i=1:m
+  % compute distances for current example
+  for j=1:K
+    dist(j) = sqrt(sum((X(i, :) - centroids(j, :)).^2));
+  endfor
+  % find the index of the closest centroid
+  [res, index] = min(dist);
+  idx(i) = index;
+endfor
 
 
 
