@@ -21,6 +21,12 @@ X_rec = zeros(size(Z, 1), size(U, 1));
 %               Notice that U(j, 1:K) is a row vector.
 %               
 
+% extract U_reduce from the U matrix
+U_reduce = U(:, 1:K);
+
+% compute approximation of the data
+X_rec = Z * U_reduce';
+
 
 
 % =============================================================

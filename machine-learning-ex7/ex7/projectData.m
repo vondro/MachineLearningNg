@@ -18,6 +18,12 @@ Z = zeros(size(X, 1), K);
 %                    projection_k = x' * U(:, k);
 %
 
+% extract U_reduce from the U matrix
+U_reduce = U(:, 1:K);
+
+% compute projections
+Z = X * U_reduce;
+
 
 
 

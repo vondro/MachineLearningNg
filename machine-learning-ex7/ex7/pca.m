@@ -20,7 +20,11 @@ S = zeros(n);
 %       number of examples).
 %
 
+% compute the covariance matrix
+Sigma = (1/m) * (X'*X);
 
+% run svd to compute pricipal components
+[U, S, V] = svd(Sigma);
 
 
 
