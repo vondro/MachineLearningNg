@@ -24,7 +24,32 @@ for epsilon = min(pval):stepsize:max(pval)
     %       of 0's and 1's of the outlier predictions
 
 
+% predictions based on the current value of epilon
+predictions = (pval < epsilon);
 
+% true positives
+tp =  sum((predictions == 1) & (yval == 1));
+
+% false positives
+fp = sum((predictions == 1) & (yval == 0));
+
+% false negatives
+fn = sum((predictions == 0) & (yval == 1));
+
+% precision
+prec = tp / (tp + fp);
+
+% recall
+rec = tp / (tp + fn);
+
+% F1 score
+F1 = (2 * prec * rec) / (prec + rec);
+
+if F1 > bestF1
+  bestF1 = F1;
+  bestEpsilon = epsilon;
+endif
+  
 
 
 
