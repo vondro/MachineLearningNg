@@ -40,10 +40,26 @@ Theta_grad = zeros(size(Theta));
 %                     partial derivatives w.r.t. to each element of Theta
 %
 
+% 5 3
+%size(X);
 
+% 5 4
+%size(Y);
 
+% 4 3
+%size(Theta);
 
+% 5 4
+%size(R);
 
+% computing the cost
+J = (1/2)* sum(sum((R .* ((X * Theta') - Y)).^2));
+
+% result should be 5x3 matrix, same as X
+X_grad = (R .* ((X * Theta') - Y)) * Theta;
+
+% result should be 4x3 matrix, same as Theta
+Theta_grad = (R .* ((X * Theta') - Y))' * X;
 
 
 
